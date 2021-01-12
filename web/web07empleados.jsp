@@ -19,7 +19,21 @@
         <%
         String sql = "select * from emp";
         Statement st = cn.createStatement();
-        
+        ResultSet rs = st.executeQuery(sql);
+        %>
+        <ul>
+        <%
+        while (rs.next()){
+            String apellido = rs.getString("APELLIDO");
+            %>
+            <li><%=apellido%></li>
+            <%
+        }
+        %>
+        </ul>
+        <%
+        rs.close();
+        cn.close();
         %>
     </body>
 </html>
