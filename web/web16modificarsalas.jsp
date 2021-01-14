@@ -38,12 +38,31 @@ Connection cn = DriverManager.getConnection(cadena, "system", "oracle");
                 String sqlsalas = "select distinct sala_cod, nombre from sala";
                 Statement st = cn.createStatement();
                 ResultSet rs = st.executeQuery(sqlsalas);
+                //NECESITAMOS SABER SI NOS HA MANDADO ALGUN DATO EL USUARIO
+                String seleccionado = request.getParameter("selectsalacod");
                 while (rs.next()){
                     String salacod = rs.getString("SALA_COD");
                     String nombre = rs.getString("NOMBRE");
-                    %>
-                    <option value="<%=salacod%>"><%=nombre%></option>
-                    <%
+                    if (seleccionado == null){
+                        //NO HA ENVIADO INFORMACION, NO SELECCIONAMOS NADA
+                        %>
+                        <option value="<%=salacod%>"><%=nombre%></option>
+                        <%
+                    }else{
+                        //TENEMOS ALGUN DATO PARA SELECCIONAR, DEBEMOS COMPARAR
+                        //CON EL VALUE
+                        if (seleccionado.equals(salacod)){
+                            //SELECCIONAMOS EL ELEMENTO
+                            %>
+                            <option value="<%=salacod%>" selected><%=nombre%></option>
+                            <%
+                        }else{
+                            //PINTAMOS SIN SELECCIONAR
+                            %>
+                            <option value="<%=salacod%>"><%=nombre%></option>
+                            <%
+                        }
+                    }
                 }
                 rs.close();
                 cn.close();
