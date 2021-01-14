@@ -22,9 +22,9 @@ Connection cn = DriverManager.getConnection(cadena, "system", "oracle");
             <label>Introduzca Id empleado</label>
             <select name="cajaidempleado">
                 <%
-                String sql = "select * from emp";
+                String sqlselect = "select * from emp";
                 Statement st = cn.createStatement();
-                ResultSet rs = st.executeQuery(sql);
+                ResultSet rs = st.executeQuery(sqlselect);
                 while (rs.next()){
                     String apellido = rs.getString("APELLIDO");
                     String empno = rs.getString("EMP_NO");
