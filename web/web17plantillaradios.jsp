@@ -31,7 +31,7 @@ Connection cn = DriverManager.getConnection(cadena, "system", "oracle");
                         //NO SELECCIONAMOS
                         %>
                         <li>
-                            <input type="radio" name="funcion" value="<%=fun%>"/><%=fun%>
+                            <input type="checkbox" name="funcion" value="<%=fun%>"/><%=fun%>
                         </li>
                         <%                        
                     }else{
