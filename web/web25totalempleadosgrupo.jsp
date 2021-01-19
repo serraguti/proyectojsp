@@ -41,8 +41,22 @@ Connection cn =
     </head>
     <body>
         <h1>Paginación todos empleados</h1>
+        <form method="post">
+            <label>Introduzca salario: </label>
+            <input type="number" name="cajasalario"
+                   required/>
+            <button type="submit">
+                Mostrar empleados
+            </button>
+        </form>
         <%
-        String sql = "select * from todosempleados";
+        String sql = "";
+        if (request.getParameter("cajasalario") == null){
+            sql = "select * from todosempleados";
+        }else{
+            sql = "select * from todosempleados where salario >= "
+                    + request.getParameter("cajasalario");
+        }
         Statement st = 
             cn.createStatement(ResultSet.TYPE_SCROLL_SENSITIVE, ResultSet.CONCUR_READ_ONLY);
         ResultSet rs = st.executeQuery(sql);
@@ -89,13 +103,26 @@ Connection cn =
             <%
             int numeropagina = 1;
             for (int i = 1; i <= numeroregistros; i+=5){
-                %>
-                <li>
-                    <a href="web25totalempleadosgrupo.jsp?posicion=<%=i%>">
-                        <%=numeropagina%>
-                    </a>
-                </li>
-                <%
+                String cajasalario = request.getParameter("cajasalario");
+                if (cajasalario == null){
+                    //NO RECIBIMOS SALARIO Y PINTAMOS SOLO LA POSICION
+                    %>
+                    <li>
+                        <a href="web25totalempleadosgrupo.jsp?posicion=<%=i%>">
+                            <%=numeropagina%>
+                        </a>
+                    </li>
+                    <%
+                }else{
+                    //PINTAMOS LA POSICION Y LA CAJA SALARIO
+                    %>
+                    <li>
+<a href="web25totalempleadosgrupo.jsp?posicion=<%=i%>&cajasalario=<%=cajasalario%>">
+                            <%=numeropagina%>
+                        </a>
+                    </li>
+                    <%
+                }
                 numeropagina += 1;
             }
             %>
