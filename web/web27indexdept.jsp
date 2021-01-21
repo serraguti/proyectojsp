@@ -1,3 +1,4 @@
+<%@page import="java.sql.PreparedStatement"%>
 <%@page import="java.sql.ResultSet"%>
 <%@page import="java.sql.Statement"%>
 <%@page import="java.sql.Connection"%>
@@ -17,6 +18,16 @@ Connection cn =
         <title>JSP Page</title>
     </head>
     <body>
+        <%
+        String eliminar = request.getParameter("eliminar");
+        if (eliminar != null){
+            int numero = Integer.parseInt(eliminar);
+            String sqldelete = "delete from dept where dept_no=?";
+            PreparedStatement pst = cn.prepareStatement(sqldelete);
+            pst.setInt(1, numero);
+            pst.executeUpdate();
+        }
+        %>
         <jsp:include page="includes/webmenudepartamentos.jsp"/>
         <section>
             <main role="main" class="container">
@@ -50,6 +61,12 @@ Connection cn =
                                     <td>
                                         <a class="btn btn-primary"
                                            href="web30detailsdept.jsp?deptno=<%=num%>">Detalles</a>
+                                        <a href="web29updatedept.jsp?deptno=<%=num%>"
+                                              class="btn btn-info">Modificar</a>
+                                        <a href="web27indexdept.jsp?eliminar=<%=num%>"
+                                           class="btn btn-danger">
+                                            Eliminar
+                                        </a>
                                     </td>
                                 </tr>
                                 <%

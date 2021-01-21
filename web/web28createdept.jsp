@@ -1,3 +1,4 @@
+<%@page import="java.sql.PreparedStatement"%>
 <%@page import="java.sql.Connection"%>
 <%@page import="oracle.jdbc.OracleDriver"%>
 <%@page import="java.sql.DriverManager"%>
@@ -49,6 +50,22 @@ Connection cn =
                     if (cajanumero != null){
                         int numero = Integer.parseInt(cajanumero);
                         String sql = "insert into dept values (?,?,?)";
+                        PreparedStatement pst = cn.prepareStatement(sql);
+                        pst.setInt(1, numero);
+                        pst.setString(2, cajanombre);
+                        pst.setString(3, cajalocalidad);
+                        int insertados = pst.executeUpdate();
+                        cn.close();
+                        //TENEMOS DOS OPCIONES:
+                        //LLEVARNOS A OTRA PAGINA, POR EJEMPLO, INDEX
+                        //PARA HACER REDIRECCIONES EN JAVA SE UTILIZA
+                        //LA ETIQUETA forward QUE NOS PERMITE PODER
+                        //REDIRECCIONAR A OTRAS PAGINAS
+                        //2) MOSTRAR UN MENSAJE AL USUARIO
+                        %>
+                        <h2 style="color:blue">Insertados: <%=insertados%></h2>
+                        <jsp:forward page="web27indexdept.jsp"/>
+                        <%
                     }
                     %>
                 </div>
