@@ -1,3 +1,5 @@
+<%@page import="java.sql.ResultSet"%>
+<%@page import="java.sql.PreparedStatement"%>
 <!--
 create view empleadoshospital
 as
@@ -31,27 +33,45 @@ Connection cn =
             <main role="main" class="container">
                 <div class="starter-template">
                     <h1>Empleados</h1>
+                    <a href="web34hospitales.jsp">
+                        Volver a Hospitales
+                    </a>
                     <%
                     //RECIBIMOS UN CODIGO (hospital)
                     //Y BUSCAMOS LOS EMPLEADOS DE ESE HOSPITAL
                     //Y LOS DIBUJAMOS
+                    String dato = request.getParameter("hospital");
+                    if (dato == null){
+                        %>
+                        <h1 style="color:red">No se ha enviado código de hospital</h1>
+                        <%
+                    }else{
+                        String sql = "select * from empleadoshospital where hospital_cod=?";
+                        int hospitalcod = Integer.parseInt(dato);
+                        PreparedStatement pst = cn.prepareStatement(sql);
+                        pst.setInt(1, hospitalcod);
+                        ResultSet rs = pst.executeQuery();
+                        %>
+                        <ul class="list-group">
+                            <%
+                            while (rs.next()){
+                                String apellido = rs.getString("APELLIDO");
+                                String idempleado = rs.getString("IDEMPLEADO");
+                            %>
+                            <li class="list-group-item">
+                                <%=apellido%>
+                                <a class="btn btn-success"
+                                    href="web34detallesempleado.jsp?idempleado=<%=idempleado%>&hospital=<%=dato%>">
+                                    Detalles
+                                </a>
+                            </li>
+                        </ul>
+                    <%
+                        }
+                        rs.close();
+                        cn.close();
+                    }
                     %>
-                    <ul class="list-group">
-                        <li class="list-group-item">
-                            Doctor House. 
-                            <a class="btn btn-success"
-                                href="web34detallesempleado.jsp?idempleado=355">
-                                Detalles
-                            </a>
-                        </li>
-                        <li class="list-group-item">
-                            Doctor Cabeza. 
-                            <a class="btn btn-success"
-                                href="web34detallesempleado.jsp?idempleado=355">
-                                Detalles
-                            </a>
-                        </li>                        
-                    </ul>
                 </div>
             </main><!-- /.container -->            
         </section>

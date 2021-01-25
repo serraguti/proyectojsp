@@ -1,3 +1,5 @@
+<%@page import="java.sql.ResultSet"%>
+<%@page import="java.sql.Statement"%>
 <%@page import="oracle.jdbc.OracleDriver"%>
 <%@page import="java.sql.Connection"%>
 <%@page import="java.sql.DriverManager"%>
@@ -22,18 +24,26 @@ Connection cn =
                     <h1>Hospitales</h1>
                     <%
                     //CARGAMOS LOS HOSPITALES
+                    String sql = "select * from hospital";
+                    Statement st = cn.createStatement();
+                    ResultSet rs = st.executeQuery(sql);
                     %>
                     <ul class="list-group">
+                        <%
+                        while (rs.next()){
+                            String codigo = rs.getString("HOSPITAL_COD");
+                            String nombre = rs.getString("NOMBRE");
+                        %>
                         <li class="list-group-item">
-                            <a href="web34empleadoshospital.jsp?hospital=22">
-                                La Paz
+                            <a href="web34empleadoshospital.jsp?hospital=<%=codigo%>">
+                                <%=nombre%>
                             </a>
                         </li>
-                        <li class="list-group-item">
-                            <a href="web34empleadoshospital.jsp?hospital=18">
-                                General
-                            </a>
-                        </li>
+                        <%
+                        }
+                        rs.close();
+                        cn.close();
+                        %>
                     </ul>
                 </div>
             </main><!-- /.container -->            
